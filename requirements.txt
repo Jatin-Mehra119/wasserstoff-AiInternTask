@@ -1,0 +1,15 @@
+langchain
+langchain-community
+langchain-groq
+faiss-cpu
+pypdf2
+pillow
+python-dotenv
+tiktoken
+sentence-transformers
+streamlit
+streamlit-chat
+plotly
+pandas
+numpy
+markdown
