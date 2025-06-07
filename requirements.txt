@@ -13,3 +13,7 @@ plotly
 pandas
 numpy
 markdown
+fastapi
+uvicorn[standard]
+python-multipart
+aiofiles
