@@ -301,7 +301,7 @@ class AgenticRAGChatApp:
             st.metric("Files Uploaded", total_files)
         
         with col2:
-            st.metric("Total Documents", len(documents))
+            st.metric("Total Pages", len(documents))
         
         with col3:
             total_words = sum(doc.metadata.get("word_count", 0) for doc in documents)
