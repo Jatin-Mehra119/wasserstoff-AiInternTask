@@ -15,6 +15,7 @@ const saveVectorStoreBtn = document.getElementById('saveVectorStoreBtn');
 const loadVectorStoreBtn = document.getElementById('loadVectorStoreBtn');
 const chatInput = document.getElementById('chatInput');
 const sendBtn = document.getElementById('sendBtn');
+const clearChatBtn = document.getElementById('clearChatBtn');
 const chatMessages = document.getElementById('chatMessages');
 const welcomeMessage = document.getElementById('welcomeMessage');
 const chatInputContainer = document.getElementById('chatInputContainer');
@@ -49,6 +50,7 @@ function initializeEventListeners() {
     
     // Chat
     sendBtn.addEventListener('click', sendMessage);
+    clearChatBtn.addEventListener('click', clearChatHistory);
     chatInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -283,6 +285,39 @@ async function sendMessage() {
     }
 }
 
+async function clearChatHistory() {
+    try {
+        // Show confirmation dialog
+        if (!confirm('Are you sure you want to clear the chat history? This action cannot be undone.')) {
+            return;
+        }
+        
+        // Call the backend API to clear chat history
+        const response = await fetch(`${apiBaseUrl}/clear-chat`, {
+            method: 'DELETE',
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            // Clear the chat messages from the UI
+            chatMessages.innerHTML = '';
+            chatHistory = [];
+            
+            // Hide the clear chat button since there are no messages
+            clearChatBtn.style.display = 'none';
+            
+            // Show success message
+            showAlert('Chat history cleared successfully', 'success');
+        } else {
+            throw new Error(data.detail || 'Failed to clear chat history');
+        }
+    } catch (error) {
+        console.error('Error clearing chat history:', error);
+        showAlert(`Error clearing chat history: ${error.message}`, 'danger');
+    }
+}
+
 function addMessageToChat(role, content, citations = null, themes = null) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${role}`;
@@ -312,6 +347,9 @@ function addMessageToChat(role, content, citations = null, themes = null) {
     
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Show clear chat button when there are messages
+    clearChatBtn.style.display = 'inline-block';
     
     // Add copy buttons to code blocks after DOM insertion
     addCopyButtonsToCodeBlocks(messageDiv);
@@ -415,11 +453,19 @@ function updateUI() {
         chatInputContainer.style.display = 'block';
         chatInput.disabled = false;
         sendBtn.disabled = false;
+        
+        // Show clear chat button if there are messages
+        if (chatMessages.children.length > 0) {
+            clearChatBtn.style.display = 'inline-block';
+        } else {
+            clearChatBtn.style.display = 'none';
+        }
     } else {
         welcomeMessage.style.display = 'block';
         chatInputContainer.style.display = 'none';
         chatInput.disabled = true;
         sendBtn.disabled = true;
+        clearChatBtn.style.display = 'none';
     }
     
     // Update stats
