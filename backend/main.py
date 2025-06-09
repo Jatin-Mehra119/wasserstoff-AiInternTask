@@ -10,6 +10,7 @@ import tempfile
 import shutil
 import json
 import aiofiles
+import uvicorn
 from datetime import datetime
 
 # Add the parent directory to the path
