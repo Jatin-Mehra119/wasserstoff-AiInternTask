@@ -288,7 +288,7 @@ async function sendMessage() {
 async function clearChatHistory() {
     try {
         // Show confirmation dialog
-        if (!confirm('Are you sure you want to clear the chat history? This action cannot be undone.')) {
+        if (!confirm('Are you sure you want to clear the chat history and reset all session data? This action cannot be undone.')) {
             return;
         }
         
@@ -302,13 +302,36 @@ async function clearChatHistory() {
         if (response.ok) {
             // Clear the chat messages from the UI
             chatMessages.innerHTML = '';
+            
+            // Restore the welcome message
+            const welcomeDiv = document.createElement('div');
+            welcomeDiv.className = 'welcome-message';
+            welcomeDiv.id = 'welcomeMessage';
+            welcomeDiv.innerHTML = `
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    Please upload and process documents using the sidebar to start chatting!
+                </div>
+            `;
+            chatMessages.appendChild(welcomeDiv);
+            
             chatHistory = [];
+            
+            // Reset session variables
+            vectorStoreLoaded = false;
+            processingStats = {};
+            
+            // Reset statistics display
+            resetStatisticsDisplay();
+            
+            // Update UI to reflect cleared state
+            updateUI();
             
             // Hide the clear chat button since there are no messages
             clearChatBtn.style.display = 'none';
             
             // Show success message
-            showAlert('Chat history cleared successfully', 'success');
+            showAlert('Chat history and session data cleared successfully', 'success');
         } else {
             throw new Error(data.detail || 'Failed to clear chat history');
         }
@@ -485,6 +508,32 @@ function updateStatsDisplay() {
     document.getElementById('totalDocuments').textContent = processingStats.total_documents || 0;
     document.getElementById('totalChunks').textContent = processingStats.total_chunks || 0;
     document.getElementById('totalFileTypes').textContent = processingStats.file_types ? processingStats.file_types.length : 0;
+}
+
+function resetStatisticsDisplay() {
+    // Reset all stats to 0
+    const statsElements = document.querySelectorAll('#totalFiles, #totalDocuments, #totalChunks, #totalFileTypes');
+    statsElements.forEach(element => {
+        if (element) element.textContent = '0';
+    });
+    
+    // Hide statistics and chart sections
+    if (statsSection) {
+        statsSection.style.display = 'none';
+    }
+    if (chartSection) {
+        chartSection.style.display = 'none';
+    }
+    
+    // Destroy charts if they exist
+    if (fileTypesChart) {
+        fileTypesChart.destroy();
+        fileTypesChart = null;
+    }
+    if (summaryChart) {
+        summaryChart.destroy();
+        summaryChart = null;
+    }
 }
 
 function updateFileTypesChart() {
