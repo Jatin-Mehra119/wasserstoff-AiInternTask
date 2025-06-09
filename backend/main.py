@@ -1,19 +1,16 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Form, BackgroundTasks
+from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 import os
 import sys
 import tempfile
 import shutil
 import json
-import asyncio
 import aiofiles
-from pathlib import Path
 from datetime import datetime
-import uuid
 
 # Add the parent directory to the path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -24,7 +21,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-app = FastAPI(title="Agentic RAG Chat API", version="1.0.0")
+app = FastAPI(title="RAG Chat API", version="1.0.0")
 
 # Enable CORS
 app.add_middleware(

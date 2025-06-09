@@ -12,15 +12,11 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.schema import Document
-from langchain_community.document_loaders import TextLoader, PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain_groq import ChatGroq
 from langchain.schema.messages import HumanMessage
-from langchain.agents import Tool, initialize_agent, AgentType
-from langchain.memory import ConversationBufferMemory
 
 # Additional imports
-import PyPDF2
-from PIL import Image
 from dotenv import load_dotenv
 import re
 
