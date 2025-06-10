@@ -45,5 +45,5 @@ USER appuser
 # Expose Port 7860 for the FastAPI server
 EXPOSE 7860
 
-# Run the fastapi server directly using python
-CMD ["python", "/app/backend/main.py"]
+# Run the fastapi server using uvicorn
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "7860"]

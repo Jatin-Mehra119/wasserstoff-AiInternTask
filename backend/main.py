@@ -6,7 +6,7 @@ import uvicorn
 from dotenv import load_dotenv
 
 # Import route modules
-from routes import main_router, upload_router, chat_router, store_router
+from . routes import main_router, upload_router, chat_router, store_router
 
 # Load environment variables
 load_dotenv()
