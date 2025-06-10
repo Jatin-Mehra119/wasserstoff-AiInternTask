@@ -16,7 +16,7 @@ from utils import (
 router = APIRouter()
 
 
-@router.post("/api/upload-files")
+@router.post("/upload-files")
 async def upload_files(files: List[UploadFile] = File(...)):
     """Upload and process multiple files."""
     try:
@@ -69,7 +69,7 @@ async def upload_files(files: List[UploadFile] = File(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/api/process-directory")
+@router.post("/process-directory")
 async def process_directory(directory_path: str = Form(...)):
     """Process documents from a directory."""
     try:

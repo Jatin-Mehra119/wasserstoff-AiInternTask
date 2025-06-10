@@ -12,7 +12,7 @@ from utils import get_processor, generate_response, get_global_state, update_glo
 router = APIRouter()
 
 
-@router.post("/api/chat", response_model=ChatResponse)
+@router.post("/chat", response_model=ChatResponse)
 async def chat(message: ChatMessage):
     """Process a chat message and return response with citations and themes."""
     try:
@@ -63,7 +63,7 @@ async def chat(message: ChatMessage):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.delete("/api/clear-chat")
+@router.delete("/clear-chat")
 async def clear_chat():
     """Clear chat history and reset session data."""
     import sys

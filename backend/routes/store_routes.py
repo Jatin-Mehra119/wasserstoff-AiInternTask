@@ -11,7 +11,7 @@ from utils import get_processor, get_global_state, update_global_state
 router = APIRouter()
 
 
-@router.post("/api/save-vector-store")
+@router.post("/save-vector-store")
 async def save_vector_store():
     """Save the current vector store."""
     try:
@@ -29,7 +29,7 @@ async def save_vector_store():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/api/load-vector-store")
+@router.post("/load-vector-store")
 async def load_vector_store():
     """Load a previously saved vector store."""
     try:

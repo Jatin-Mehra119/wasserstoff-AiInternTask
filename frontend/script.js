@@ -1,5 +1,4 @@
 // Global variables
-let apiBaseUrl = '/api';
 let vectorStoreLoaded = false;
 let processingStats = {};
 let chatHistory = [];
@@ -83,7 +82,7 @@ async function setApiKey() {
     
     try {
         showLoading(true);
-        const response = await fetch(`${apiBaseUrl}/set-api-key`, {
+        const response = await fetch(`/set-api-key`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -132,7 +131,7 @@ async function uploadFiles() {
     try {
         showProcessingModal('Processing uploaded documents...');
         
-        const response = await fetch(`${apiBaseUrl}/upload-files`, {
+        const response = await fetch(`/upload-files`, {
             method: 'POST',
             body: formData
         });
@@ -173,7 +172,7 @@ async function processDirectory() {
         const formData = new FormData();
         formData.append('directory_path', directoryPath);
         
-        const response = await fetch(`${apiBaseUrl}/process-directory`, {
+        const response = await fetch(`/process-directory`, {
             method: 'POST',
             body: formData
         });
@@ -201,7 +200,7 @@ async function saveVectorStore() {
     try {
         showLoading(true);
         
-        const response = await fetch(`${apiBaseUrl}/save-vector-store`, {
+        const response = await fetch(`/save-vector-store`, {
             method: 'POST'
         });
         
@@ -223,7 +222,7 @@ async function loadVectorStore() {
     try {
         showLoading(true);
         
-        const response = await fetch(`${apiBaseUrl}/load-vector-store`, {
+        const response = await fetch(`/load-vector-store`, {
             method: 'POST'
         });
         
@@ -261,7 +260,7 @@ async function sendMessage() {
     sendBtn.disabled = true;
     
     try {
-        const response = await fetch(`${apiBaseUrl}/chat`, {
+        const response = await fetch(`/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -293,7 +292,7 @@ async function clearChatHistory() {
         }
         
         // Call the backend API to clear chat history
-        const response = await fetch(`${apiBaseUrl}/clear-chat`, {
+        const response = await fetch(`/clear-chat`, {
             method: 'DELETE',
         });
         
@@ -456,7 +455,7 @@ function createThemesSection(themes) {
 // Stats Management
 async function loadStats() {
     try {
-        const response = await fetch(`${apiBaseUrl}/stats`);
+        const response = await fetch(`/stats`);
         const data = await response.json();
         
         if (response.ok) {

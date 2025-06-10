@@ -19,7 +19,7 @@ async def read_root():
     return FileResponse(frontend_path)
 
 
-@router.post("/api/set-api-key")
+@router.post("/set-api-key")
 async def set_api_key(request: APIKeyRequest):
     """Set the GROQ API key."""
     try:
@@ -30,14 +30,14 @@ async def set_api_key(request: APIKeyRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.get("/api/stats")
+@router.get("/stats")
 async def get_stats():
     """Get processing statistics."""
     state = get_global_state()
     return {"stats": state["processing_stats"], "vector_store_loaded": state["vector_store_loaded"]}
 
 
-@router.get("/api/chat-history")
+@router.get("/chat-history")
 async def get_chat_history():
     """Get chat history."""
     state = get_global_state()
