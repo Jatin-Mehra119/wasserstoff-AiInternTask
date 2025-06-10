@@ -20,11 +20,13 @@ from langchain.schema.messages import HumanMessage
 from dotenv import load_dotenv
 import re
 
+from rag_elements.config import Config
+
 # Load environment variables
 load_dotenv()
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=getattr(logging, Config.LOG_LEVEL), format=Config.LOG_FORMAT)
 logger = logging.getLogger(__name__)
 
 class EnhancedDocumentProcessor:
@@ -40,25 +42,25 @@ class EnhancedDocumentProcessor:
             self.vision_llm = None
         else:
             self.vision_llm = ChatGroq(
-                model="meta-llama/llama-4-scout-17b-16e-instruct",
+                model=Config.VISION_LLM_MODEL,
                 api_key=self.groq_api_key
             )
         
         # Initialize chat model for analysis
         self.chat_llm = ChatGroq(
-            model="llama-3.3-70b-versatile",
+            model=Config.CHAT_LLM_MODEL,
             api_key=self.groq_api_key
         ) if self.groq_api_key else None
         
         # Initialize embeddings
-        self.embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+        self.embeddings = SentenceTransformerEmbeddings(model_name=Config.EMBEDDINGS_MODEL)
         
         # Initialize text splitter with better chunk tracking
         self.text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=800,
-            chunk_overlap=100,
+            chunk_size=Config.CHUNK_SIZE,
+            chunk_overlap= Config.CHUNK_OVERLAP,
             length_function=len,
-            separators=["\n\n", "\n", ". ", "! ", "? ", " ", ""]
+            separators= Config.CHUNK_SEPARATORS
         )
         
         # Document tracking
@@ -86,8 +88,8 @@ class EnhancedDocumentProcessor:
     
     def _generate_chunk_id(self, content: str, source: str, chunk_index: int) -> str:
         """Generate a unique ID for a document chunk."""
-        content_hash = hashlib.md5(content.encode()).hexdigest()[:8]
-        source_hash = hashlib.md5(source.encode()).hexdigest()[:8]
+        content_hash = hashlib.md5(content.encode()).hexdigest()[:Config.CONTENT_HASH_LENGTH]
+        source_hash = hashlib.md5(source.encode()).hexdigest()[:Config.SOURCE_HASH_LENGTH]
         return f"{source_hash}_{chunk_index}_{content_hash}"
     
     def _extract_sentences(self, text: str) -> List[Tuple[str, int, int]]:
@@ -128,6 +130,7 @@ class EnhancedDocumentProcessor:
                         {
                             "type": "text",
                             "text": (
+                                Config.OCR_PROMPT if Config.OCR_PROMPT else
                                 "Extract all the text from this image. "
                                 "Preserve the structure and formatting as much as possible. "
                                 "If there's no text, return 'No text found'."
@@ -281,7 +284,7 @@ class EnhancedDocumentProcessor:
         logger.info(f"Successfully processed {len(documents)} documents from {len(file_paths)} files")
         return documents
     
-    def process_directory(self, directory_path: str, recursive: bool = True) -> List[Document]:
+    def process_directory(self, directory_path: str, recursive: bool = Config.ENABLE_RECURSIVE_DIRECTORY_PROCESSING) -> List[Document]:
         """Process all supported files in a directory."""
         documents = []
         directory = Path(directory_path)
@@ -364,7 +367,7 @@ class EnhancedDocumentProcessor:
         logger.info(f"Successfully created FAISS vector store with {len(enhanced_chunks)} chunks")
         return vector_store
     
-    def search_with_citations(self, query: str, k: int = 5) -> List[Dict[str, Any]]:
+    def search_with_citations(self, query: str, k: int = Config.DEFAULT_SEARCH_K) -> List[Dict[str, Any]]:
         """Search for similar documents and return results with citation information."""
         if not self.vector_store:
             logger.error("No vector store available. Create or load one first.")
@@ -418,27 +421,10 @@ class EnhancedDocumentProcessor:
             contents = [result["content"] for result in search_results]
             combined_content = "\n\n---\n\n".join(contents)
             
-            theme_analysis_prompt = f"""
-            Analyze the following document excerpts and identify common themes related to the query: "{query}"
-            
-            Document excerpts:
-            {combined_content}
-            
-            Please provide:
-            1. A list of 3-5 main themes/topics that appear across these documents
-            2. A brief summary of how these themes relate to the query
-            3. Key insights or patterns you notice
-            
-            Format your response as JSON with the following structure:
-            {{
-                "themes": [
-                    {{"name": "Theme Name", "description": "Brief description", "frequency": "how often it appears"}},
-                    ...
-                ],
-                "summary": "Overall summary of themes",
-                "insights": ["Key insight 1", "Key insight 2", ...]
-            }}
-            """
+            theme_analysis_prompt = Config.THEME_ANALYSIS_PROMPT_TEMPLATE.format(
+                query=query,
+                content=combined_content[:Config.MAX_CONTENT_LENGTH_FOR_THEME_ANALYSIS]
+            )
             
             response = self.chat_llm.invoke(theme_analysis_prompt)
             
@@ -476,7 +462,7 @@ class EnhancedDocumentProcessor:
             metadata = {
                 "num_documents": len(self.processed_documents),
                 "num_chunks": self.vector_store.index.ntotal,
-                "embedding_model": "all-MiniLM-L6-v2",
+                "embedding_model": Config.EMBEDDINGS_MODEL,
                 "processed_files": [
                     {
                         "source": doc.metadata.get("source", ""),
@@ -490,7 +476,7 @@ class EnhancedDocumentProcessor:
                 "chunk_overlap": self.text_splitter._chunk_overlap
             }
             
-            with open(f"{save_path}/enhanced_metadata.json", "w") as f:
+            with open(f"{save_path}/{Config.ENHANCED_METADATA_FILENAME}", "w") as f:
                 json.dump(metadata, f, indent=2)
             
             logger.info(f"Enhanced vector store saved to {save_path}")
@@ -504,12 +490,12 @@ class EnhancedDocumentProcessor:
             vector_store = FAISS.load_local(
                 load_path, 
                 self.embeddings, 
-                allow_dangerous_deserialization=True
+                allow_dangerous_deserialization=Config.ENABLE_DANGEROUS_DESERIALIZATION
             )
             self.vector_store = vector_store
             
             # Load enhanced metadata if available
-            metadata_path = f"{load_path}/enhanced_metadata.json"
+            metadata_path = f"{load_path}/{Config.ENHANCED_METADATA_FILENAME}"
             if os.path.exists(metadata_path):
                 with open(metadata_path, "r") as f:
                     metadata = json.load(f)

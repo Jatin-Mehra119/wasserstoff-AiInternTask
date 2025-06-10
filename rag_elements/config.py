@@ -2,7 +2,7 @@
 # This file contains all configurable parameters for the EnhancedDocumentProcessor
 
 # Model Configuration
-class Config:
+class Config: 
     # Model Names
     CHAT_LLM_MODEL = "llama-3.3-70b-versatile"
     VISION_LLM_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
@@ -23,24 +23,6 @@ class Config:
     # Hash Configuration
     CONTENT_HASH_LENGTH = 8
     SOURCE_HASH_LENGTH = 8
-
-    # File Type Configuration
-    SUPPORTED_EXTENSIONS = {
-        '.pdf': 'pdf',
-        '.txt': 'text', 
-        '.md': 'text',
-        '.py': 'text',
-        '.js': 'text',
-        '.html': 'text',
-        '.csv': 'text',
-        '.json': 'text',
-        '.png': 'image',
-        '.jpg': 'image', 
-        '.jpeg': 'image',
-        '.bmp': 'image',
-        '.tiff': 'image',
-        '.webp': 'image'
-    }
 
     # OCR Configuration
     OCR_PROMPT = (
