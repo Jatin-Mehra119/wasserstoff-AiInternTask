@@ -389,7 +389,7 @@ backend/vector_store/           # Generated when processing documents
 
 ### Performance Considerations
 - **Chunk Size**: Optimized at 800 characters with 100-character overlap
-- **Embedding Model**: Uses efficient all-MiniLM-L6-v2 model
+- **Embedding Model**: Uses efficient all-MiniLM-L6-v2 model (For accuracy use BAAI/bge-large-en-v1.5)
 - **Vector Search**: FAISS provides fast similarity search with relevance scoring
 - **Caching**: Vector stores can be saved/loaded with complete metadata preservation
 - **Async Operations**: File uploads and processing use async/await patterns
