@@ -1,5 +1,5 @@
 // Global variables
-let apiBaseUrl = 'http://localhost:7860/api';
+let apiBaseUrl = '/api';
 let vectorStoreLoaded = false;
 let processingStats = {};
 let chatHistory = [];
