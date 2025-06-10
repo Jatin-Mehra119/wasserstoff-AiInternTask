@@ -33,4 +33,4 @@ app.include_router(chat_router)
 app.include_router(store_router)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=7860, log_level="info")
