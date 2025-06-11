@@ -1,4 +1,9 @@
 # 🤖 RAG CHAT APPLICATION
+<div align="center">
+
+[![Sync to Hugging Face Space](https://github.com/Jatin-Mehra119/wasserstoff-AiInternTask/actions/workflows/sync_to_hf.yaml/badge.svg)](https://github.com/Jatin-Mehra119/wasserstoff-AiInternTask/actions/workflows/sync_to_hf.yaml)
+
+</div>
 
 A sophisticated Retrieval-Augmented Generation (RAG) chat application that enables intelligent conversations with your documents. Built with a modular architecture featuring a FastAPI backend, modern web frontend, and powerful document processing capabilities.
 
