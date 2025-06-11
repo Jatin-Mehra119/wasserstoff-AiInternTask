@@ -15,6 +15,11 @@
             <!-- Sidebar -->
             <div class="col-md-3 sidebar bg-light">
                 <div class="sidebar-content p-3">
+                    <!-- Mobile Close Button -->
+                    <button class="mobile-close-btn d-md-none" id="mobileCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    
                     <h4 class="mb-4">🔧 Configuration</h4>
                     
                     <!-- API Key Section -->
@@ -105,6 +110,11 @@
 
             <!-- Main Content -->
             <div class="col-md-9 main-content">
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn d-md-none" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
                 <div class="header text-center py-4">
                     <h1 class="main-title">📚 RAG Chat Application</h1>
                 </div>
@@ -134,18 +144,20 @@
                                 </div>
                                 <small class="text-muted">Markdown supported • Ctrl+P to preview • Ctrl+Enter to send</small>
                             </div>
-                            <div class="input-area">
-                                <textarea class="form-control" id="chatInput" rows="3"
-                                       placeholder="Ask a question about your documents... (Markdown supported)" disabled></textarea>
-                                <div class="markdown-preview" id="markdownPreview" style="display: none;"></div>
-                            </div>
-                            <div class="input-actions">
-                                <button class="btn btn-outline-warning me-2" id="clearChatBtn" title="Clear chat history" style="display: none;">
-                                    <i class="fas fa-trash"></i> Clear Chat
-                                </button>
-                                <button class="btn btn-primary" id="sendBtn" disabled>
-                                    <i class="fas fa-paper-plane"></i> Send
-                                </button>
+                            <div class="input-section">
+                                <div class="input-area">
+                                    <textarea class="form-control" id="chatInput" rows="2"
+                                           placeholder="Ask a question about your documents... (Markdown supported)" disabled></textarea>
+                                    <div class="markdown-preview" id="markdownPreview" style="display: none;"></div>
+                                </div>
+                                <div class="input-actions">
+                                    <button class="btn btn-outline-warning btn-sm" id="clearChatBtn" title="Clear chat history" style="display: none;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" id="sendBtn" disabled>
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -161,6 +173,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="mobile-overlay d-md-none" id="mobileOverlay"></div>
 
     <!-- Processing Modal -->
     <div class="modal fade" id="processingModal" tabindex="-1">

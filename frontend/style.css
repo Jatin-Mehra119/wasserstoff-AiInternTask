@@ -23,10 +23,18 @@ body, html {
     border-right: 1px solid #dee2e6;
     background-color: #ffffff !important;
     box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+    position: relative;
 }
 
 .sidebar-content {
     padding: 1.5rem !important;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .sidebar-content {
+        padding-top: 4rem !important; /* Space for close button */
+    }
 }
 
 .sidebar h4 {
@@ -83,10 +91,11 @@ body, html {
 }
 
 .chat-input-container {
-    padding: 1rem;
+    padding: 0.5rem;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 0.5rem;
 }
 
 /* Enhanced Chat Input Styles */
@@ -94,8 +103,8 @@ body, html {
     background: white;
     border-radius: 8px;
     border: 1px solid #dee2e6;
-    padding: 1rem;
-    margin: 1rem;
+    padding: 0.75rem;
+    margin: 0;
 }
 
 .input-controls {
@@ -112,18 +121,25 @@ body, html {
     color: #6c757d;
 }
 
+.input-section {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
 .input-area {
     position: relative;
-    margin-bottom: 0.5rem;
+    flex: 1;
 }
 
 .input-area textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 60px;
     border: 1px solid #dee2e6;
     border-radius: 6px;
-    padding: 0.75rem;
+    padding: 0.5rem 0.75rem;
     font-family: inherit;
+    width: 100%;
 }
 
 .input-area textarea:focus {
@@ -136,7 +152,7 @@ body, html {
     border-radius: 6px;
     padding: 0.75rem;
     background-color: #f8f9fa;
-    min-height: 80px;
+    min-height: 60px;
     max-height: 200px;
     overflow-y: auto;
 }
@@ -149,12 +165,14 @@ body, html {
 
 .input-actions {
     display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: flex-end;
 }
 
 .input-actions .btn {
-    padding: 0.5rem 1rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
 }
 
 /* Message Styles */
@@ -645,8 +663,10 @@ kbd {
         top: 0;
         left: -100%;
         width: 80%;
+        max-width: 320px;
         z-index: 1000;
         transition: left 0.3s ease;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.3);
     }
     
     .sidebar.show {
@@ -655,10 +675,17 @@ kbd {
     
     .main-content {
         width: 100%;
+        margin-left: 0;
+        padding-top: 4rem; /* Space for mobile menu button */
     }
     
     .main-title {
         font-size: 1.8rem;
+        margin-top: 0;
+    }
+    
+    .header {
+        padding: 1rem 0 2rem 0 !important;
     }
     
     .stats-grid {
@@ -676,9 +703,95 @@ kbd {
         gap: 0.5rem;
     }
     
-    .input-actions {
-        justify-content: center;
+    .input-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
     }
+    
+    .input-actions {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .chat-container {
+        height: calc(100vh - 6rem);
+    }
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: #1f77b4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-btn:hover {
+    background: #1565c0;
+    transform: scale(1.05);
+}
+
+.mobile-menu-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(31, 119, 180, 0.3);
+}
+
+/* Mobile Close Button */
+.mobile-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.mobile-close-btn:hover {
+    background: #c82333;
+    transform: scale(1.1);
+}
+
+.mobile-close-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.3);
+}
+
+/* Mobile Overlay */
+.mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.mobile-overlay.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* Scrollbar Styling */
