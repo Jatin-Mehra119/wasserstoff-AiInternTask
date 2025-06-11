@@ -556,13 +556,17 @@ function updateFileTypesChart() {
                 datasets: [{
                     data: data,
                     backgroundColor: [
-                        '#FF6384',
-                        '#36A2EB',
-                        '#FFCE56',
-                        '#4BC0C0',
-                        '#9966FF',
-                        '#FF9F40'
-                    ]
+                        '#4fc3f7',
+                        '#66bb6a',
+                        '#ff9800',
+                        '#f44336',
+                        '#9c27b0',
+                        '#3f51b5',
+                        '#00bcd4',
+                        '#8bc34a'
+                    ],
+                    borderColor: '#555',
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -570,7 +574,20 @@ function updateFileTypesChart() {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'bottom'
+                        position: 'bottom',
+                        labels: {
+                            color: '#e0e0e0',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#2d2d2d',
+                        titleColor: '#e0e0e0',
+                        bodyColor: '#e0e0e0',
+                        borderColor: '#555',
+                        borderWidth: 1
                     }
                 }
             }
@@ -621,13 +638,17 @@ function showProcessingSummary(stats) {
                 datasets: [{
                     data: data,
                     backgroundColor: [
-                        '#FF6384',
-                        '#36A2EB',
-                        '#FFCE56',
-                        '#4BC0C0',
-                        '#9966FF',
-                        '#FF9F40'
-                    ]
+                        '#4fc3f7',
+                        '#66bb6a',
+                        '#ff9800',
+                        '#f44336',
+                        '#9c27b0',
+                        '#3f51b5',
+                        '#00bcd4',
+                        '#8bc34a'
+                    ],
+                    borderColor: '#555',
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -635,7 +656,20 @@ function showProcessingSummary(stats) {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'bottom'
+                        position: 'bottom',
+                        labels: {
+                            color: '#e0e0e0',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#2d2d2d',
+                        titleColor: '#e0e0e0',
+                        bodyColor: '#e0e0e0',
+                        borderColor: '#555',
+                        borderWidth: 1
                     }
                 }
             }
