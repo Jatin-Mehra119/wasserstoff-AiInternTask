@@ -578,6 +578,20 @@ docker-compose up -d
 - **🌐 WebSocket Support**: Real-time chat updates and live document processing
 - **🧠 Model Upgrades**: Integration with latest embedding and LLM models
 
+## 📚 Documentation
+
+Comprehensive documentation is available in the `docs/` directory:
+
+- **[📖 Documentation Index](docs/index.md)** - Complete documentation overview
+- **[🏗️ Architecture & Quick Start](docs/README.md)** - Project architecture with mermaid diagram
+- **[🔌 API Reference](docs/API.md)** - REST API endpoints and examples
+- **[💻 Development Guide](docs/DEVELOPMENT.md)** - Contributing and development setup
+
+### Interactive API Documentation
+When the server is running, visit:
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+
 ## 📄 License
 
 This project is licensed under the **Apache License 2.0** - see the [LICENSE](LICENSE) file for complete details.
