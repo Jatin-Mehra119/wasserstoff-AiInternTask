@@ -29,7 +29,7 @@ ARG GROQ_API_KEY
 
 # Docs: https://huggingface.co/docs/hub/en/spaces-sdks-docker#secrets-and-variables-management
 
-# Expose the secret GROQ_API_KEY and OLLAMA_API_TOKEN at build time and set them as environment variables
+# Expose the secret GROQ_API_KEY at build time and set them as environment variables
 RUN --mount=type=secret,id=GROQ_API_KEY,mode=0444,required=true \
     export GROQ_API_KEY=$(cat /run/secrets/GROQ_API_KEY) && \
     echo "GROQ_API_KEY is set."
